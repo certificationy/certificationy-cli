@@ -13,9 +13,6 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/console": ">=2.5",
-        "symfony/finder": ">=2.5",
-        "symfony/yaml": ">=2.5",
         "certificationy/certificationy": ">=1.0"
     },
     "require-dev": {
