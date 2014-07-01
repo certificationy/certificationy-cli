@@ -3,7 +3,7 @@
     {
         "name": ["*.php", "*.yml"],
         "exclude": ["Tests"],
-        "in": [".", "data", "Certification", "Command", "vendor"]
+        "in": ["."]
     }
     ],
     "files": ["composer.json", "LICENSE"],
