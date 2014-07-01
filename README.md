@@ -59,8 +59,3 @@ $ php certificationy.php --numbers=5 --show-multiple-choice "Automated tests" "B
 * Only get questions from category "Automated tests" and "Bundles"
 
 > Note: if you pass --list [-l] then you will ONLY get the category list, regarding your other settings
-
-# Please, add your questions!
-
-You can submit PR with your own questions into the `data/` directory to extends questions database.
-More we will have questions, the more powerful will be this tool!
