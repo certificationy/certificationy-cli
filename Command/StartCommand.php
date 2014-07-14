@@ -109,7 +109,7 @@ class StartCommand extends Command
             $answers = true === $multiSelect ? $answer : array($answer);
             $answer  = true === $multiSelect ? implode(', ', $answer) : $answer;
 
-            $set->addAnswer($i, $answers);
+            $set->setAnswer($i, $answers);
 
             $output->writeln('<comment>✎ Your answer</comment>: ' . $answer . "\n");
         }
