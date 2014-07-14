@@ -22,7 +22,7 @@ $ php certificationy.phar [--number=20]
 or download the "always fresh" `.phar` file hosted here:
 
 ```
-$ curl -O http://composieux.fr/certificationy-cli/certificationy.phar
+$ curl -O http://composieux.fr/certificationy.phar
 ```
 
 ## Using Composer
