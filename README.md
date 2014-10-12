@@ -64,7 +64,7 @@ $ php certificationy.php --show-multiple-choice
 
 ### And all combined
 ```
-$ php certificationy.php --numbers=5 --show-multiple-choice "Automated tests" "Bundles"
+$ php certificationy.php --number=5 --show-multiple-choice "Automated tests" "Bundles"
 ```
 
 * 5 questions
