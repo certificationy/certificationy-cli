@@ -45,7 +45,7 @@ class StartCommand extends Command
             ->setDescription('Starts a new question set')
             ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', 20)
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
-			->addOption('show-multiple-choice', null, InputOption::VALUE_OPTIONAL, 'Should we tell you when the question is multiple choice?', true)
+            ->addOption('show-multiple-choice', null, InputOption::VALUE_OPTIONAL, 'Should we tell you when the question is multiple choice?', true)
             ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
         ;
     }
@@ -56,18 +56,18 @@ class StartCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('list')) {
-            $output->writeln(Loader::getCategories());
+            $output->writeln(Loader::getCategories($this->path()));
             return ;
         }
 
         $categories = $input->getArgument('categories');
         $number     = $input->getOption('number');
 
-        $set = Loader::init($number, $categories);
+        $set = Loader::init($number, $categories, $this->path());
 
         if ($set->getQuestions()) {
             $output->writeln(
-                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), Loader::count())
+                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), Loader::count(array(), $this->path()))
             );
 
             $this->askQuestions($set, $input, $output);
@@ -151,6 +151,16 @@ class StartCommand extends Command
                 sprintf('<comment>Results</comment>: <error>errors: %s</error> - <info>correct: %s</info>', $set->getErrorsNumber(), $set->getValidNumber())
             );
         }
+    }
+
+    /**
+     * Returns configuration file path
+     *
+     * @return  String       $path      The configuration filepath
+     */
+    protected function path()
+    {
+        return dirname(__DIR__).DIRECTORY_SEPARATOR.'config.yml';
     }
 }
 

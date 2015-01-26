@@ -13,7 +13,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "certificationy/certificationy": ">=1.0"
+        "certificationy/certificationy": "dev-master",
+        "certificationy/symfony-pack": "dev-master",
+        "certificationy/php-pack": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1"
