@@ -30,11 +30,17 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
      */
     private $command;
 
+    /**
+     * @var string config filepath
+     */
+    private $configFile;
+
     public function setUp()
     {
         $app = new Application();
         $app->add(new StartCommand());
         $this->command = $app->find('start');
+        $this->configFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.yml';
     }
 
     public function testCanListCategories()
@@ -47,7 +53,7 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $commandTester->getDisplay();
         $this->assertRegExp('/Twig/', $output);
-        $this->assertCount(count(Loader::getCategories()) + 1, explode("\n", $output));
+        $this->assertCount(count(Loader::getCategories($this->configFile)) + 1, explode("\n", $output));
     }
 
     public function testCanGetQuestions()
