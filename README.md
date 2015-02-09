@@ -4,13 +4,7 @@ Certificationy CLI
 [![Build Status](https://secure.travis-ci.org/certificationy/certificationy-cli.png?branch=master)](http://travis-ci.org/certificationy/certificationy-cli)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc/mini.png)](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc)
 
----
-
-**Important**: Certificationy is not affiliated with SensioLabs or Symfony and you must not contribute if you have ever tried to pass the exam.
-
----
-
-This is the CLI tool to train on Symfony certification.
+This is the CLI tool to train on certifications.
 
 # How it looks?
 ![Certificationy application](http://vincent.composieux.fr/assets/img/blog/certificationy-console.png "Certificationy application")
