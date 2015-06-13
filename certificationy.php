@@ -13,13 +13,13 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Certificationy\Cli\Application\Certificationy as Application;
 use Certificationy\Cli\Command\StartCommand;
 use KevinGH\Amend\Command;
 use KevinGH\Amend\Helper;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Yaml;
 
-$application = new Application();
+$application = new Application('certificationy-cli', '1.1.1');
 
 $config = Yaml::parse('config.yml');
 $updateCommand = new Command('self-update');
