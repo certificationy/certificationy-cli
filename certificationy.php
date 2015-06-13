@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+
 /*
  * This file is part of the Certificationy CLI application.
  *
@@ -10,9 +11,24 @@
  * file that was distributed with this source code.
  */
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 use Certificationy\Cli\Application\Certificationy as Application;
+use Certificationy\Cli\Command\StartCommand;
+use KevinGH\Amend\Command;
+use KevinGH\Amend\Helper;
+use Symfony\Component\Yaml\Yaml;
 
 $application = new Application();
+
+$config = Yaml::parse('config.yml');
+$updateCommand = new Command('self-update');
+$updateCommand->setManifestUri($config['manifest_uri']);
+$application->add($updateCommand);
+$application->getHelperSet()->set(new Helper());
+
+$startCommand = new StartCommand();
+$application->add($startCommand);
+$application->setDefaultCommand($startCommand->getName());
+
 $application->run();

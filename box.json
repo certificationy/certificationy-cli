@@ -1,12 +1,19 @@
 {
     "finder": [
-    {
-        "name": ["*.php", "*.yml"],
-        "exclude": ["Tests"],
-        "in": ["."]
-    }
+        {
+            "name": [
+                "*.php",
+                "*.yml"
+            ],
+            "exclude": ["Tests"],
+            "in": ["."]
+        }
     ],
-    "files": ["composer.json", "LICENSE"],
+    "files": [
+        "composer.json",
+        "LICENSE",
+        "vendor/herrera-io/phar-update/res/schema.json"
+    ],
     "main": "certificationy.php",
     "output": "certificationy.phar",
     "stub": true,
