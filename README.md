@@ -9,7 +9,7 @@ This is the CLI tool to train on certifications.
 # How it looks?
 ![Certificationy application](http://vincent.composieux.fr/assets/img/blog/certificationy-console.png "Certificationy application")
 
-# Installation
+# Installation and update
 
 ## Using Phar
 
@@ -23,6 +23,7 @@ or download the "always fresh" `.phar` file hosted here:
 
 ```
 $ curl -O http://composieux.fr/certificationy.phar
+$ php certificationy.phar self-update
 ```
 
 ## Using Composer
