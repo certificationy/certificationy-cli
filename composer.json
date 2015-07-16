@@ -2,7 +2,13 @@
     "name": "certificationy/certificationy-cli",
     "type": "library",
     "description": "A CLI tool to train on Symfony certification",
-    "keywords": ["symfony", "certification", "cli", "test", "exam"],
+    "keywords": [
+        "symfony",
+        "certification",
+        "cli",
+        "test",
+        "exam"
+    ],
     "homepage": "http://github.com/certificationy/certificationy-cli",
     "license": "MIT",
     "authors": [
@@ -15,13 +21,16 @@
         "php": ">=5.3.3",
         "certificationy/certificationy": "dev-master",
         "certificationy/symfony-pack": "dev-master",
-        "certificationy/php-pack": "dev-master"
+        "certificationy/php-pack": "dev-master",
+
+        "herrera-io/phar-update": "~1.0",
+        "kherge/amend": "~3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1"
     },
     "autoload": {
-        "psr-4": { "Certificationy\\Cli\\": "" }
+        "psr-4": {"Certificationy\\Cli\\": ""}
     },
     "extra": {
         "branch-alias": {
@@ -29,4 +38,3 @@
         }
     }
 }
-
