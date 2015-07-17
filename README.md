@@ -19,13 +19,6 @@ $ php box.phar build
 $ php certificationy.phar [--number=20]
 ```
 
-or download the "always fresh" `.phar` file hosted here:
-
-```
-$ curl -O http://composieux.fr/certificationy.phar
-$ php certificationy.phar self-update
-```
-
 ## Using Composer
 ```
 $ composer create-project certificationy/certificationy-cli
