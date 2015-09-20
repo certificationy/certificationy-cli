@@ -11,14 +11,6 @@ This is the CLI tool to train on certifications.
 
 # Installation and update
 
-## Using Phar
-
-```
-$ curl -s http://box-project.org/installer.php | php
-$ php box.phar build
-$ php certificationy.phar [--number=20]
-```
-
 ## Using Composer
 ```
 $ composer create-project certificationy/certificationy-cli
