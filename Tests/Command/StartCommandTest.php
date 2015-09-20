@@ -52,7 +52,7 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         ));
 
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/Twig/', $output);
+        $this->assertRegExp('/Templating/', $output);
         $this->assertCount(count(Loader::getCategories($this->configFile)) + 1, explode("\n", $output));
     }
 
