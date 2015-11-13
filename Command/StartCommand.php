@@ -45,6 +45,7 @@ class StartCommand extends Command
             ->setDescription('Starts a new question set')
             ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', 20)
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
+            ->addOption("training", null, InputOption::VALUE_NONE, "Training mode: the solution is displayed after each question")
             ->addOption('show-multiple-choice', null, InputOption::VALUE_OPTIONAL, 'Should we tell you when the question is multiple choice?', true)
             ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
         ;
@@ -110,6 +111,15 @@ class StartCommand extends Command
             $answer  = true === $multiSelect ? implode(', ', $answer) : $answer;
 
             $set->setAnswer($i, $answers);
+
+            if($input->getOption("training"))
+            {
+                $uniqueSet = new Set(array($i => $question));
+
+                $uniqueSet->setAnswer($i, $answers);
+
+                $this->displayResults($uniqueSet, $output);
+            }
 
             $output->writeln('<comment>✎ Your answer</comment>: ' . $answer . "\n");
         }
