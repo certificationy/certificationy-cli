@@ -21,7 +21,7 @@ use Symfony\Component\Yaml\Yaml;
 
 $application = new Application('certificationy-cli', '1.1.1');
 
-$config = Yaml::parse('config.yml');
+$config = Yaml::parse(file_get_contents('config.yml'));
 $updateCommand = new Command('self-update');
 $updateCommand->setManifestUri($config['manifest_uri']);
 $application->add($updateCommand);
