@@ -15,10 +15,15 @@
         {
             "name": "Vincent Composieux",
             "email": "vincent.composieux@gmail.com"
+        },
+        {
+            "name": "Mickaël Andrieu",
+            "email": "andrieu.travail@gmail.com"
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
+        "symfony/console": "~2.5|~3.0",
         "certificationy/certificationy": "dev-master",
         "certificationy/symfony-pack": "dev-master",
         "certificationy/php-pack": "dev-master",
