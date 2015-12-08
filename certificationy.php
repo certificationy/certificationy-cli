@@ -19,7 +19,10 @@ use KevinGH\Amend\Helper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Yaml;
 
-$application = new Application('certificationy-cli', '1.3');
+const VERSION = 1.4;
+const APPLICATION_NAME = 'Certificationy';
+
+$application = new Application(self::APPLICATION_NAME, self::VERSION);
 
 $config = Yaml::parse(file_get_contents('config.yml'));
 $updateCommand = new Command('self-update');
