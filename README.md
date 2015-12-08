@@ -21,14 +21,14 @@ $ php certificationy.php [--number=20]
 
 ### List categories
 ```
-$ php certificationy.php --list [-l]
+$ php certificationy.php start --list [-l]
 ```
 
 Will list all the categories available
 
 ### Only questions from certain categories
 ```
-$ php certificationy.php "Automated tests" "Bundles"
+$ php certificationy.php start "Automated tests" "Bundles"
 ```
 
 Will only get the questions from the categories "Automated tests" and "Bundles"
@@ -37,14 +37,14 @@ Use the category list from [List categories](#list-categories)
 
 ### Show if a question has multiple choices
 ```
-$ php certificationy.php --show-multiple-choice
+$ php certificationy.php start --show-multiple-choice
 ```
 
 ![Multiple choices](https://cloud.githubusercontent.com/assets/795661/3308225/721b5324-f679-11e3-8d9d-62ba32cd8e32.png "Multiple choices")
 
 ### And all combined
 ```
-$ php certificationy.php --number=5 --show-multiple-choice "Automated tests" "Bundles"
+$ php certificationy.php start --number=5 --show-multiple-choice "Automated tests" "Bundles"
 ```
 
 * 5 questions
