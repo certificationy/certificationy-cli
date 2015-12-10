@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
 const VERSION = 1.4;
 const APPLICATION_NAME = 'Certificationy';
 
-$application = new Application(self::APPLICATION_NAME, self::VERSION);
+$application = new Application(APPLICATION_NAME, VERSION);
 
 $config = Yaml::parse(file_get_contents('config.yml'));
 $updateCommand = new Command('self-update');
