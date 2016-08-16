@@ -14,10 +14,17 @@ This is the CLI tool to train on certifications.
 ## Using Composer
 ```
 $ composer create-project certificationy/certificationy-cli
-$ php certificationy.php [--number=20]
+$ php certificationy.php
 ```
 
 ## More run options
+
+### Select the number of questions
+```
+$ php certificationy.php start --number=10
+```
+
+The default value is 20.
 
 ### List categories
 ```
