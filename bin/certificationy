@@ -11,7 +11,14 @@
  * file that was distributed with this source code.
  */
 
-require __DIR__ . '/vendor/autoload.php';
+$autoloadFiles = array(__DIR__.'/../vendor/autoload.php',
+    __DIR__.'/../../../autoload.php');
+
+foreach ($autoloadFiles as $autoloadFile) {
+    if (file_exists($autoloadFile)) {
+        require_once $autoloadFile;
+    }
+}
 
 use Certificationy\Cli\Command\StartCommand;
 use KevinGH\Amend\Command;
@@ -24,7 +31,7 @@ const APPLICATION_NAME = 'Certificationy';
 
 $application = new Application(APPLICATION_NAME, VERSION);
 
-$config = Yaml::parse(file_get_contents('config.yml'));
+$config = Yaml::parse(file_get_contents(__DIR__.'/../config.yml'));
 $updateCommand = new Command('self-update');
 $updateCommand->setManifestUri($config['manifest_uri']);
 $application->add($updateCommand);

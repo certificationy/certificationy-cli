@@ -15,28 +15,28 @@ This is the CLI tool to train on certifications.
 ## Using Composer
 ```
 $ composer create-project certificationy/certificationy-cli
-$ php certificationy.php
+$ bin/certificationy
 ```
 
 ## More run options
 
 ### Select the number of questions
 ```
-$ php certificationy.php start --number=10
+$ bin/certificationy start --number=10
 ```
 
 The default value is 20.
 
 ### List categories
 ```
-$ php certificationy.php start --list [-l]
+$ bin/certificationy start --list [-l]
 ```
 
 Will list all the categories available
 
 ### Only questions from certain categories
 ```
-$ php certificationy.php start "Automated tests" "Bundles"
+$ bin/certificationy start "Automated tests" "Bundles"
 ```
 
 Will only get the questions from the categories "Automated tests" and "Bundles"
@@ -45,14 +45,14 @@ Use the category list from [List categories](#list-categories)
 
 ### Show if a question has multiple choices
 ```
-$ php certificationy.php start --show-multiple-choice
+$ bin/certificationy start --show-multiple-choice
 ```
 
 ![Multiple choices](https://cloud.githubusercontent.com/assets/795661/3308225/721b5324-f679-11e3-8d9d-62ba32cd8e32.png "Multiple choices")
 
 ### And all combined
 ```
-$ php certificationy.php start --number=5 --show-multiple-choice "Automated tests" "Bundles"
+$ bin/certificationy start --number=5 --show-multiple-choice "Automated tests" "Bundles"
 ```
 
 * 5 questions
