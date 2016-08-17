@@ -13,7 +13,6 @@ namespace Certificationy\Cli\Tests\Command;
 
 use Certificationy\Certification\Loader;
 use Certificationy\Cli\Command\StartCommand;
-
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -65,9 +64,6 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester->execute(array(
             'command' => $this->command->getName(),
         ));
-
-        $output = $commandTester->getDisplay();
-        $this->assertRegExp('/Twig/', $output);
         $this->assertRegExp('/Starting a new set of 20 questions/', $commandTester->getDisplay());
     }
 

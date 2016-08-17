@@ -13,7 +13,6 @@ namespace Certificationy\Cli\Command;
 
 use Certificationy\Certification\Loader;
 use Certificationy\Certification\Set;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,24 +57,23 @@ class StartCommand extends Command
     {
         if ($input->getOption('list')) {
             $output->writeln(Loader::getCategories($this->path()));
-            return ;
+            return;
         }
-
-        $categories = $input->getArgument('categories');
-        $number     = $input->getOption('number');
-
-        $set = Loader::init($number, $categories, $this->path());
-
-        if ($set->getQuestions()) {
-            $output->writeln(
-                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), Loader::count(array(), $this->path()))
-            );
-
-            $this->askQuestions($set, $input, $output);
-            $this->displayResults($set, $output);
-        } else {
+        /** @var Set $set */
+        $set = Loader::init($input->getOption('number'), $input->getArgument('categories'), $this->path());
+        if (0 === count($set)) {
             $output->writeln('<error>✗</error> No questions can be found.');
+            return;
         }
+        $output->writeln(
+            sprintf(
+                'Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)',
+                count($set),
+                Loader::count()
+            )
+        );
+        $this->askQuestions($set, $input, $output);
+        $this->displayResults($set, $output);
     }
 
     /**
@@ -157,9 +155,22 @@ class StartCommand extends Command
 
             $tableHelper->render($output);
 
-            $output->writeln(
-                sprintf('<comment>Results</comment>: <error>errors: %s</error> - <info>correct: %s</info>', $set->getErrorsNumber(), $set->getValidNumber())
-            );
+            if($set->getErrorsNumber()) {
+                $output->writeln(
+                    sprintf(
+                        '<comment>Results</comment>: <error>errors: %s</error> - <info>correct: %s</info>',
+                        $set->getErrorsNumber(),
+                        $set->getValidNumber()
+                    )
+                );
+            } else {
+                $output->writeln(
+                    sprintf(
+                        '<comment>Results</comment>: no errors - <info>correct: %s</info>',
+                        $set->getValidNumber()
+                    )
+                );
+            }
         }
     }
 
