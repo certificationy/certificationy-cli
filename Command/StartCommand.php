@@ -59,18 +59,17 @@ class StartCommand extends Command
             $output->writeln(Loader::getCategories($this->path()));
             return;
         }
-        $questions = Loader::load($input->getArgument('categories'), $this->path());
-        if (!$questions) {
+        /** @var Set $set */
+        $set = Loader::init($input->getOption('number'), $input->getArgument('categories'), $this->path());
+        if (0 === count($set)) {
             $output->writeln('<error>✗</error> No questions can be found.');
             return;
         }
-        shuffle($questions);
-        $set = new Set(array_slice($questions, 0, $input->getOption('number')));
         $output->writeln(
             sprintf(
                 'Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)',
                 count($set),
-                count($questions)
+                Loader::count()
             )
         );
         $this->askQuestions($set, $input, $output);
