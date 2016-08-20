@@ -64,6 +64,7 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->command);
         $commandTester->execute(array(
             'command' => $this->command->getName(),
+            'categories' => ['Templating'],
         ));
 
         $output = $commandTester->getDisplay();
