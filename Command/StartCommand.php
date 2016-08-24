@@ -48,6 +48,7 @@ class StartCommand extends Command
             ->addOption("training", null, InputOption::VALUE_NONE, "Training mode: the solution is displayed after each question")
             ->addOption('show-multiple-choice', null, InputOption::VALUE_OPTIONAL, 'Should we tell you when the question is multiple choice?', true)
             ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
+            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom config', null)
         ;
     }
 
@@ -56,15 +57,16 @@ class StartCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $config = $this->path($input->getOption('config'));
         if ($input->getOption('list')) {
-            $output->writeln(Loader::getCategories($this->path()));
+            $output->writeln(Loader::getCategories($config));
             return ;
         }
 
         $categories = $input->getArgument('categories');
         $number     = $input->getOption('number');
 
-        $set = Loader::init($number, $categories, $this->path());
+        $set = Loader::init($number, $categories, $config);
 
         if ($set->getQuestions()) {
             $output->writeln(
@@ -166,11 +168,13 @@ class StartCommand extends Command
     /**
      * Returns configuration file path
      *
-     * @return  String       $path      The configuration filepath
+     * @param null|string $config
+     *
+     * @return String $path      The configuration filepath
      */
-    protected function path()
+    protected function path($config = null)
     {
-        return dirname(__DIR__).DIRECTORY_SEPARATOR.'config.yml';
+        return $config ? $config : dirname(__DIR__).DIRECTORY_SEPARATOR.('config.yml');
     }
 }
 

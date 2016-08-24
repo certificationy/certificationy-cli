@@ -50,6 +50,13 @@ $ bin/certificationy start --show-multiple-choice
 
 ![Multiple choices](https://cloud.githubusercontent.com/assets/795661/3308225/721b5324-f679-11e3-8d9d-62ba32cd8e32.png "Multiple choices")
 
+### Set custom configuration file
+```
+$ bin/certificationy start --config=../config.yml
+```
+
+Will set custom config file
+
 ### And all combined
 ```
 $ bin/certificationy start --number=5 --show-multiple-choice "Automated tests" "Bundles"
