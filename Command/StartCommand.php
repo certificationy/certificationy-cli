@@ -104,8 +104,10 @@ class StartCommand extends Command
             );
 
             $multiSelect = $showMultipleChoice === true ? $question->isMultipleChoice() : true;
+            $numericOnly = 1 === array_product(array_map('is_numeric', $question->getAnswersLabels()));
             $choiceQuestion->setMultiselect($multiSelect);
             $choiceQuestion->setErrorMessage('Answer %s is invalid.');
+            $choiceQuestion->setAutocompleterValues($numericOnly ? null : $question->getAnswersLabels());
 
             $answer = $questionHelper->ask($input, $output, $choiceQuestion);
 
