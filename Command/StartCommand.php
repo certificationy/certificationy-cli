@@ -60,6 +60,7 @@ class StartCommand extends Command
         $config = $this->path($input->getOption('config'));
         if ($input->getOption('list')) {
             $output->writeln(Loader::getCategories($config));
+
             return ;
         }
 
@@ -70,7 +71,7 @@ class StartCommand extends Command
 
         if ($set->getQuestions()) {
             $output->writeln(
-                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), Loader::count(array(), $this->path()))
+                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), Loader::count())
             );
 
             $this->askQuestions($set, $input, $output);
@@ -93,12 +94,17 @@ class StartCommand extends Command
         $showMultipleChoice = $input->getOption('show-multiple-choice');
         $questionCount = 1;
 
-        foreach($set->getQuestions() as $i => $question) {
+        foreach ($set->getQuestions() as $i => $question) {
+            $versions = (count($question->getVersions()) > 0) ? implode(' ,', $question->getVersions()) : null;
+
             $choiceQuestion = new ChoiceQuestion(
                 sprintf(
-                    'Question <comment>#%d</comment> [<info>%s</info>] %s'.
-                    ($showMultipleChoice === true ? "\n" . 'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice." : ""),
-                    $questionCount++, $question->getCategory(), $question->getQuestion()
+                    'Question <comment>#%d</comment> [<info>%s</info>] %s %s %s'."\n",
+                    $questionCount++,
+                    $question->getCategory(),
+                    $question->getQuestion(),
+                    ($showMultipleChoice === true ? "\n".'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice." : ""),
+                    ($versions !== null) ? "\n"."Versions: {$versions}" : ''
                 ),
                 $question->getAnswersLabels()
             );
@@ -116,8 +122,7 @@ class StartCommand extends Command
 
             $set->setAnswer($i, $answers);
 
-            if($input->getOption("training"))
-            {
+            if ($input->getOption("training")) {
                 $uniqueSet = new Set(array($i => $question));
 
                 $uniqueSet->setAnswer($i, $answers);
@@ -125,7 +130,8 @@ class StartCommand extends Command
                 $this->displayResults($uniqueSet, $output);
             }
 
-            $output->writeln('<comment>✎ Your answer</comment>: ' . $answer . "\n");
+            $output->writeln(sprintf('<comment>✎ Your answer</comment>: %s', $answer));
+            $output->writeln('');
         }
     }
 
@@ -141,21 +147,24 @@ class StartCommand extends Command
 
         $questionCount = 1;
 
-        foreach($set->getQuestions() as $key => $question) {
+        foreach ($set->getQuestions() as $key => $question) {
             $isCorrect = $set->isCorrect($key);
+            $questionCount++;
             $label = wordwrap($question->getQuestion(), self::WORDWRAP_NUMBER, "\n");
+            $help = $question->getHelp();
 
             $results[] = array(
-                sprintf('<comment>#%d</comment> %s', $questionCount++, $label),
+                sprintf('<comment>#%d</comment> %s', $questionCount, $label),
                 wordwrap(implode(', ', $question->getCorrectAnswersValues()), self::WORDWRAP_NUMBER, "\n"),
-                $isCorrect ? '<info>✔</info>' : '<error>✗</error>'
+                $isCorrect ? '<info>✔</info>' : '<error>✗</error>',
+                (null !== $help) ? wordwrap($help, self::WORDWRAP_NUMBER, "\n") : '',
             );
         }
 
         if ($results) {
             $tableHelper = $this->getHelper('table');
             $tableHelper
-                ->setHeaders(array('Question', 'Correct answer', 'Result'))
+                ->setHeaders(array('Question', 'Correct answer', 'Result', 'Help'))
                 ->setRows($results)
             ;
 
@@ -179,4 +188,3 @@ class StartCommand extends Command
         return $config ? $config : dirname(__DIR__).DIRECTORY_SEPARATOR.('config.yml');
     }
 }
-
