@@ -95,16 +95,13 @@ class StartCommand extends Command
         $questionCount = 1;
 
         foreach ($set->getQuestions() as $i => $question) {
-            $versions = (count($question->getVersions()) > 0) ? implode(' ,', $question->getVersions()) : null;
-
             $choiceQuestion = new ChoiceQuestion(
                 sprintf(
-                    'Question <comment>#%d</comment> [<info>%s</info>] %s %s %s'."\n",
+                    'Question <comment>#%d</comment> [<info>%s</info>] %s %s'."\n",
                     $questionCount++,
                     $question->getCategory(),
                     $question->getQuestion(),
-                    ($showMultipleChoice === true ? "\n".'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice." : ""),
-                    ($versions !== null) ? "\n"."Versions: {$versions}" : ''
+                    ($showMultipleChoice === true ? "\n".'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice." : "")
                 ),
                 $question->getAnswersLabels()
             );
