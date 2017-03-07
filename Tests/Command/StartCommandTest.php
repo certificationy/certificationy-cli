@@ -72,6 +72,22 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Starting a new set of 20 questions/', $commandTester->getDisplay());
     }
 
+    public function testCanHideInformationAboutMultipleChoice()
+    {
+        $helper = $this->command->getHelper('question');
+        $helper->setInputStream($this->getInputStream(str_repeat("0\n", 1)));
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute(array(
+            'command' => $this->command->getName(),
+            '--hide-multiple-choice' => null,
+            '--number' => 1,
+        ));
+
+        $output = $commandTester->getDisplay();
+        $this->assertNotRegExp('/This question IS( NOT)? multiple choice/', $output);
+    }
+
     protected function getInputStream($input)
     {
         $stream = fopen('php://memory', 'r+', false);

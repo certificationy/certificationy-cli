@@ -44,11 +44,11 @@ class StartCommand extends Command
         $this
             ->setName('start')
             ->setDescription('Starts a new question set')
+            ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
             ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', 20)
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
             ->addOption("training", null, InputOption::VALUE_NONE, "Training mode: the solution is displayed after each question")
-            ->addOption('show-multiple-choice', null, InputOption::VALUE_OPTIONAL, 'Should we tell you when the question is multiple choice?', true)
-            ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
+            ->addOption('hide-multiple-choice', null, InputOption::VALUE_NONE, 'Should we hide the information that the question is multiple choice?')
             ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom config', null)
         ;
     }
@@ -92,7 +92,7 @@ class StartCommand extends Command
     protected function askQuestions(Set $set, InputInterface $input, OutputInterface $output)
     {
         $questionHelper = $this->getHelper('question');
-        $showMultipleChoice = $input->getOption('show-multiple-choice');
+        $hideMultipleChoice = $input->getOption('hide-multiple-choice');
         $questionCount = 1;
 
         foreach ($set->getQuestions() as $i => $question) {
@@ -102,12 +102,12 @@ class StartCommand extends Command
                     $questionCount++,
                     $question->getCategory(),
                     $question->getQuestion(),
-                    ($showMultipleChoice === true ? "\n".'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice." : "")
+                    ($hideMultipleChoice === true ? "" : "\n".'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice.")
                 ),
                 $question->getAnswersLabels()
             );
 
-            $multiSelect = $showMultipleChoice === true ? $question->isMultipleChoice() : true;
+            $multiSelect = true === $hideMultipleChoice ? true : $question->isMultipleChoice();
             $numericOnly = 1 === array_product(array_map('is_numeric', $question->getAnswersLabels()));
             $choiceQuestion->setMultiselect($multiSelect);
             $choiceQuestion->setErrorMessage('Answer %s is invalid.');
