@@ -43,12 +43,14 @@ Will only get the questions from the categories "Automated tests" and "Bundles"
 
 Use the category list from [List categories](#list-categories)
 
-### Show if a question has multiple choices
+### Hide the information that questions are/aren't multiple choice
 ```
-$ php certificationy.php start --show-multiple-choice
+$ php certificationy.php start --hide-multiple-choice
 ```
 
-![Multiple choices](https://cloud.githubusercontent.com/assets/795661/3308225/721b5324-f679-11e3-8d9d-62ba32cd8e32.png "Multiple choices")
+As default, the information will be displayed
+
+![Multiple choice](https://cloud.githubusercontent.com/assets/795661/3308225/721b5324-f679-11e3-8d9d-62ba32cd8e32.png "Multiple choice")
 
 ### Set custom configuration file
 ```
@@ -59,11 +61,11 @@ Will set custom config file
 
 ### And all combined
 ```
-$ php certificationy.php start --number=5 --show-multiple-choice "Automated tests" "Bundles"
+$ php certificationy.php start --number=5 --hide-multiple-choice "Automated tests" "Bundles"
 ```
 
 * 5 questions
-* We will show if a questions has multiple choices
+* We will hide the information that questions are/aren't multiple choice
 * Only get questions from category "Automated tests" and "Bundles"
 
 > Note: if you pass --list [-l] then you will ONLY get the category list, regarding your other settings
