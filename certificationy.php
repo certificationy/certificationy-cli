@@ -19,7 +19,7 @@ use KevinGH\Amend\Helper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Yaml;
 
-const VERSION = 1.4;
+const VERSION = 1.6;
 const APPLICATION_NAME = 'Certificationy';
 
 $application = new Application(APPLICATION_NAME, VERSION);
