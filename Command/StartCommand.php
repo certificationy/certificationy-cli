@@ -143,7 +143,7 @@ class StartCommand extends Command
     {
         $results = array();
 
-        $questionCount = 1;
+        $questionCount = 0;
 
         foreach ($set->getQuestions() as $key => $question) {
             $isCorrect = $set->isCorrect($key);
