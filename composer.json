@@ -24,7 +24,7 @@
     "require": {
         "php": ">=5.4",
         "symfony/console": "~2.5|~3.0",
-        "certificationy/certificationy": "dev-master",
+        "certificationy/certificationy": "~1.4",
         "certificationy/symfony-pack": "dev-master",
         "certificationy/php-pack": "dev-master",
 
