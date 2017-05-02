@@ -14,24 +14,18 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use Certificationy\Cli\Command\StartCommand;
-use KevinGH\Amend\Command;
-use KevinGH\Amend\Helper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Yaml;
 
-const VERSION = 1.6;
+const VERSION = 2.0;
 const APPLICATION_NAME = 'Certificationy';
 
 $application = new Application(APPLICATION_NAME, VERSION);
 
 $config = Yaml::parse(file_get_contents('config.yml'));
-$updateCommand = new Command('self-update');
-$updateCommand->setManifestUri($config['manifest_uri']);
-$application->add($updateCommand);
-$application->getHelperSet()->set(new Helper());
 
 $startCommand = new StartCommand();
 $application->add($startCommand);
-$application->setDefaultCommand($startCommand->getName());
+$application->setDefaultCommand($startCommand->getName(), true);
 
 $application->run();

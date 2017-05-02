@@ -1,7 +1,7 @@
 {
     "name": "certificationy/certificationy-cli",
     "type": "library",
-    "description": "A CLI tool to train on Symfony certification",
+    "description": "A CLI tool to train certifications",
     "keywords": [
         "symfony",
         "certification",
@@ -22,25 +22,22 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "symfony/console": "~2.5|~3.0",
-        "certificationy/certificationy": "~1.5",
+        "php": ">=7.0",
+        "symfony/console": "~3.2",
+        "certificationy/certificationy": "dev-master",
+        "symfony/yaml": "~3.2",
         "certificationy/symfony-pack": "dev-master",
-        "certificationy/php-pack": "dev-master",
-
-        "herrera-io/phar-update": "~2.0",
-        "kherge/amend": "~3.0"
+        "certificationy/php-pack": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.1",
-        "kherge/box": "~2.0"
+        "phpunit/phpunit": "~6.0"
     },
     "autoload": {
         "psr-4": {"Certificationy\\Cli\\": ""}
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }

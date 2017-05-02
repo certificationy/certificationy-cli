@@ -11,9 +11,10 @@
 
 namespace Certificationy\Cli\Tests\Command;
 
-use Certificationy\Certification\Loader;
+use Certificationy\Loaders\YamlLoader as Loader;
 use Certificationy\Cli\Command\StartCommand;
 
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
-class StartCommandTest extends \PHPUnit_Framework_TestCase
+class StartCommandTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -35,12 +36,20 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
      */
     private $configFile;
 
+    /**
+     * @var Loader
+     */
+    private $yamlLoader;
+
     public function setUp()
     {
         $app = new Application();
         $app->add(new StartCommand());
         $this->command = $app->find('start');
         $this->configFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.yml';
+        $paths = Yaml::parse(file_get_contents($this->configFile));
+
+        $this->yamlLoader = new Loader($paths);
     }
 
     public function testCanListCategories()
@@ -53,7 +62,7 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $commandTester->getDisplay();
         $this->assertRegExp('/Templating/', $output);
-        $this->assertCount(count(Loader::getCategories($this->configFile)) + 1, explode("\n", $output));
+        $this->assertCount(count($this->yamlLoader->categories()) + 1, explode("\n", $output));
     }
 
     public function testCanGetQuestions()
@@ -93,7 +102,7 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $stream = fopen('php://memory', 'r+', false);
         fputs($stream, $input);
         rewind($stream);
+
         return $stream;
     }
-
 }
