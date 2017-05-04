@@ -24,16 +24,19 @@
     "require": {
         "php": ">=7.0",
         "symfony/console": "~3.2",
-        "certificationy/certificationy": "dev-master",
+        "certificationy/certificationy": "~2.0",
         "symfony/yaml": "~3.2",
-        "certificationy/symfony-pack": "dev-master",
-        "certificationy/php-pack": "dev-master"
+        "certificationy/symfony-pack": "~1.4",
+        "certificationy/php-pack": "~1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0"
     },
     "autoload": {
-        "psr-4": {"Certificationy\\Cli\\": ""}
+        "psr-4": {"Certificationy\\Cli\\": "src"}
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\": "tests/" }
     },
     "extra": {
         "branch-alias": {

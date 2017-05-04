@@ -12,6 +12,7 @@
 namespace Certificationy\Cli\Command;
 
 use Certificationy\Loaders\YamlLoader as Loader;
+use Certificationy\Collections\Questions;
 use Certificationy\Set;
 
 use Symfony\Component\Console\Command\Command;
@@ -45,7 +46,7 @@ class StartCommand extends Command
         $this
             ->setName('start')
             ->setDescription('Starts a new question set')
-            ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
+            ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', [])
             ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', 20)
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
             ->addOption("training", null, InputOption::VALUE_NONE, "Training mode: the solution is displayed after each question")
@@ -125,7 +126,7 @@ class StartCommand extends Command
             $set->setUserAnswers($i, $answers);
 
             if ($input->getOption("training")) {
-                $uniqueSet = new Set(array($i => $question));
+                $uniqueSet = Set::create(new Questions([$i => $question]));
 
                 $uniqueSet->setUserAnswers($i, $answers);
 
@@ -145,7 +146,7 @@ class StartCommand extends Command
      */
     protected function displayResults(Set $set, OutputInterface $output)
     {
-        $results = array();
+        $results = [];
 
         $questionCount = 0;
 
@@ -155,12 +156,12 @@ class StartCommand extends Command
             $label = wordwrap($question->getQuestion(), self::WORDWRAP_NUMBER, "\n");
             $help = $question->getHelp();
 
-            $results[] = array(
+            $results[] = [
                 sprintf('<comment>#%d</comment> %s', $questionCount, $label),
                 wordwrap(implode(', ', $question->getCorrectAnswersValues()), self::WORDWRAP_NUMBER, "\n"),
                 $isCorrect ? '<info>✔</info>' : '<error>✗</error>',
                 (null !== $help) ? wordwrap($help, self::WORDWRAP_NUMBER, "\n") : '',
-            );
+            ];
         }
 
         if ($results) {
@@ -185,8 +186,15 @@ class StartCommand extends Command
      *
      * @return String $path      The configuration filepath
      */
-    protected function path($config = null)
+    protected function path(string $config = null) : string
     {
-        return $config ? $config : dirname(__DIR__).DIRECTORY_SEPARATOR.('config.yml');
+        $defaultConfig = dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . '..'
+            . DIRECTORY_SEPARATOR
+            . 'config.yml'
+        ;
+
+        return $config ?? $defaultConfig;
     }
 }
