@@ -18,6 +18,17 @@ $ composer create-project certificationy/certificationy-cli
 $ php certificationy.php
 ```
 
+##  Using with Docker
+
+To install it, run the following commands (Docker must be installed on your system):
+
+```
+$ docker-compose up -d # Download, build and run Docker images
+$ sh docker-ssh # ssh into local docker instance"
+$ php certificationy.php # Run Certificationy CLI
+$ exit # To exit bash docker
+```
+
 ## More run options
 
 ### Select the number of questions
