@@ -18,7 +18,7 @@ $ composer create-project certificationy/certificationy-cli
 $ php certificationy.php
 ```
 
-##  Using with Docker
+##  With Docker and Docker compose
 
 To install it, run the following commands (Docker must be installed on your system):
 

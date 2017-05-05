@@ -23,13 +23,6 @@ COPY docker/php/install-composer.sh /usr/local/bin/docker-app-install-composer
 
 RUN chmod +x /usr/local/bin/docker-app-install-composer
 
-RUN set -xe \
-	&& apk add --no-cache --virtual .fetch-deps \
-		openssl \
-	&& docker-app-install-composer \
-	&& mv composer.phar /usr/local/bin/composer \
-	&& apk del .fetch-deps
-
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
