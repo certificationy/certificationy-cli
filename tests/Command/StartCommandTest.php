@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Certificationy\Cli\Tests\Command;
+namespace Tests\Command;
 
-use Certificationy\Certification\Loader;
+use Certificationy\Loaders\YamlLoader as Loader;
 use Certificationy\Cli\Command\StartCommand;
 
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
-class StartCommandTest extends \PHPUnit_Framework_TestCase
+class StartCommandTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -35,12 +36,20 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
      */
     private $configFile;
 
+    /**
+     * @var Loader
+     */
+    private $yamlLoader;
+
     public function setUp()
     {
         $app = new Application();
         $app->add(new StartCommand());
         $this->command = $app->find('start');
-        $this->configFile = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.yml';
+        $this->configFile = $this->getTestsFolder() . 'config_test.yml';
+        $paths = Yaml::parse(file_get_contents($this->configFile));
+
+        $this->yamlLoader = new Loader($paths);
     }
 
     public function testCanListCategories()
@@ -48,12 +57,14 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->command);
         $commandTester->execute(array(
             'command' => $this->command->getName(),
-            '-l' => true
+            '-l' => true,
+            '-c' => $this->configFile
         ));
 
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/Templating/', $output);
-        $this->assertCount(count(Loader::getCategories($this->configFile)) + 1, explode("\n", $output));
+
+        $this->assertRegExp('/A/', $output);
+        $this->assertCount(count($this->yamlLoader->categories()) + 1, explode("\n", $output));
     }
 
     public function testCanGetQuestions()
@@ -64,12 +75,13 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($this->command);
         $commandTester->execute(array(
             'command' => $this->command->getName(),
-            'categories' => ['Templating'],
+            'categories' => ['B'],
+            '-c' => $this->configFile
         ));
 
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/Twig/', $output);
-        $this->assertRegExp('/Starting a new set of 20 questions/', $commandTester->getDisplay());
+        $this->assertRegExp('/B/', $output);
+        $this->assertRegExp('/Starting a new set of 3 questions/', $commandTester->getDisplay());
     }
 
     public function testCanHideInformationAboutMultipleChoice()
@@ -82,10 +94,31 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
             'command' => $this->command->getName(),
             '--hide-multiple-choice' => null,
             '--number' => 1,
+            '-c' => $this->configFile
         ));
 
         $output = $commandTester->getDisplay();
         $this->assertNotRegExp('/This question IS( NOT)? multiple choice/', $output);
+    }
+
+    public function testCanUseTrainingMode()
+    {
+        $helper = $this->command->getHelper('question');
+        $helper->setInputStream($this->getInputStream(str_repeat("0\n", 1)));
+
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute(array(
+            'command' => $this->command->getName(),
+            '--hide-multiple-choice' => null,
+            '--number' => 1,
+            '--training' => true,
+            '-c' => $this->configFile
+        ));
+
+        $commandTester->setInputs([0]);
+        $output = $commandTester->getDisplay();
+
+        $this->assertRegExp('/| Question | Correct answer | Result | Help |/', $output);
     }
 
     protected function getInputStream($input)
@@ -93,7 +126,12 @@ class StartCommandTest extends \PHPUnit_Framework_TestCase
         $stream = fopen('php://memory', 'r+', false);
         fputs($stream, $input);
         rewind($stream);
+
         return $stream;
     }
 
+    private function getTestsFolder()
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+    }
 }

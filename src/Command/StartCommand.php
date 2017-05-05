@@ -11,8 +11,9 @@
 
 namespace Certificationy\Cli\Command;
 
-use Certificationy\Certification\Loader;
-use Certificationy\Certification\Set;
+use Certificationy\Loaders\YamlLoader as Loader;
+use Certificationy\Collections\Questions;
+use Certificationy\Set;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -21,6 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class StartCommand
@@ -44,7 +46,7 @@ class StartCommand extends Command
         $this
             ->setName('start')
             ->setDescription('Starts a new question set')
-            ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', array())
+            ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', [])
             ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', 20)
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
             ->addOption("training", null, InputOption::VALUE_NONE, "Training mode: the solution is displayed after each question")
@@ -59,8 +61,11 @@ class StartCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = $this->path($input->getOption('config'));
+        $paths = Yaml::parse(file_get_contents($config));
+
+        $yamlLoader = new Loader($paths);
         if ($input->getOption('list')) {
-            $output->writeln(Loader::getCategories($config));
+            $output->writeln($yamlLoader->categories());
 
             return ;
         }
@@ -68,11 +73,11 @@ class StartCommand extends Command
         $categories = $input->getArgument('categories');
         $number     = $input->getOption('number');
 
-        $set = Loader::init($number, $categories, $config);
+        $set = Set::create($yamlLoader->load($number, $categories));
 
         if ($set->getQuestions()) {
             $output->writeln(
-                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), Loader::count())
+                sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), count($yamlLoader->all()))
             );
 
             $this->askQuestions($set, $input, $output);
@@ -95,7 +100,7 @@ class StartCommand extends Command
         $hideMultipleChoice = $input->getOption('hide-multiple-choice');
         $questionCount = 1;
 
-        foreach ($set->getQuestions() as $i => $question) {
+        foreach ($set->getQuestions()->all() as $i => $question) {
             $choiceQuestion = new ChoiceQuestion(
                 sprintf(
                     'Question <comment>#%d</comment> [<info>%s</info>] %s %s'."\n",
@@ -118,12 +123,12 @@ class StartCommand extends Command
             $answers = true === $multiSelect ? $answer : array($answer);
             $answer  = true === $multiSelect ? implode(', ', $answer) : $answer;
 
-            $set->setAnswer($i, $answers);
+            $set->setUserAnswers($i, $answers);
 
             if ($input->getOption("training")) {
-                $uniqueSet = new Set(array($i => $question));
+                $uniqueSet = Set::create(new Questions([$i => $question]));
 
-                $uniqueSet->setAnswer($i, $answers);
+                $uniqueSet->setUserAnswers($i, $answers);
 
                 $this->displayResults($uniqueSet, $output);
             }
@@ -141,22 +146,22 @@ class StartCommand extends Command
      */
     protected function displayResults(Set $set, OutputInterface $output)
     {
-        $results = array();
+        $results = [];
 
         $questionCount = 0;
 
-        foreach ($set->getQuestions() as $key => $question) {
+        foreach ($set->getQuestions()->all() as $key => $question) {
             $isCorrect = $set->isCorrect($key);
             $questionCount++;
             $label = wordwrap($question->getQuestion(), self::WORDWRAP_NUMBER, "\n");
             $help = $question->getHelp();
 
-            $results[] = array(
+            $results[] = [
                 sprintf('<comment>#%d</comment> %s', $questionCount, $label),
                 wordwrap(implode(', ', $question->getCorrectAnswersValues()), self::WORDWRAP_NUMBER, "\n"),
                 $isCorrect ? '<info>✔</info>' : '<error>✗</error>',
                 (null !== $help) ? wordwrap($help, self::WORDWRAP_NUMBER, "\n") : '',
-            );
+            ];
         }
 
         if ($results) {
@@ -169,7 +174,7 @@ class StartCommand extends Command
             $tableHelper->render();
 
             $output->writeln(
-                sprintf('<comment>Results</comment>: <error>errors: %s</error> - <info>correct: %s</info>', $set->getErrorsNumber(), $set->getValidNumber())
+                sprintf('<comment>Results</comment>: <error>errors: %s</error> - <info>correct: %s</info>', $set->getWrongAnswers()->count(), $set->getCorrectAnswers()->count())
             );
         }
     }
@@ -181,8 +186,15 @@ class StartCommand extends Command
      *
      * @return String $path      The configuration filepath
      */
-    protected function path($config = null)
+    protected function path(string $config = null) : string
     {
-        return $config ? $config : dirname(__DIR__).DIRECTORY_SEPARATOR.('config.yml');
+        $defaultConfig = dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . '..'
+            . DIRECTORY_SEPARATOR
+            . 'config.yml'
+        ;
+
+        return $config ?? $defaultConfig;
     }
 }
