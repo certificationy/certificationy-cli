@@ -7,4 +7,3 @@ services:
       SYMFONY_ENV: dev
     volumes:
       - ./:/srv/certificationy
-      - ./vendor:/srv/certificationy/vendor
