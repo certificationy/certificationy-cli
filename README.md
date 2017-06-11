@@ -1,11 +1,12 @@
 <p align="center">
-    <img src="https://avatars0.githubusercontent.com/u/8029934?v=3&s=200"> Certificationy CLI
+    <img src="https://avatars0.githubusercontent.com/u/8029934?v=3&s=200">
 </p>
+
+# Certificationy CLI
+> This is the CLI tool to train on certifications.
 
 [![Build Status](https://secure.travis-ci.org/certificationy/certificationy-cli.png?branch=master)](http://travis-ci.org/certificationy/certificationy-cli)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc/mini.png)](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc)
-
-This is the CLI tool to train on certifications.
 
 # How it looks?
 
@@ -72,6 +73,9 @@ You should then be able to run `make` which will show you using the Makefile:
 
 ```
 $ make
+start:           Start the project
+bash:            Go to the bash container of the application
+stop:            Stop docker containers
 ```
 
 Start the application with `make start`:
@@ -163,3 +167,7 @@ $ php certificationy.php start --number=5 --hide-multiple-choice "Automated test
 * Only get questions from category "Automated tests" and "Bundles"
 
 > Note: if you pass --list [-l] then you will ONLY get the category list, regarding your other settings
+
+[docker]: https://www.docker.com
+[docker-compose]: https://docs.docker.com/compose/install/
+[make]: https://www.gnu.org/software/make/
