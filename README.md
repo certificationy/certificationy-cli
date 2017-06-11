@@ -34,7 +34,7 @@ To install Docker, refer to the official documentation for your operating system
 Once Docker installed, to check its smooth running, run docker -v, you should get something like suit:
 
 ```
-$ Docker -v
+$ docker -v
 Docker version 1.12.4, build 1564f02
 ```
 > You must use the minimum version 1.12 of Docker.
@@ -44,7 +44,7 @@ To install the docker-composer, please also refer to the official documentation:
 Once docker-composes installed (install it globally to be able and access from anywhere), to check its proper functioning, run docker-compose -v, you should get something like suit:
 
 ```
-$ Docker-compos -v
+$ docker-compose -v
 Docker-composer version 1.10.0, build 4bd6f1a
 ```
 
@@ -54,7 +54,7 @@ A makefile allows you to manipulate the container simply and easily.
 You have to be able to run `make -v`, which you are ready to choose:
 
 ```
-$ Make -v
+$ make -v
 GNU Make 4.1
 Built for x86_64-pc-linux-gnu
 Copyright (C) 1988-2014 Free Software Foundation, Inc.
