@@ -33,6 +33,7 @@ RUN apt-get update -q && \
         php7.1-zip \
         supervisor \
         tzdata \
+        ca-certificates \
         wget && \
 
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
