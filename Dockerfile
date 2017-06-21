@@ -3,7 +3,10 @@ FROM php:7.1-fpm-alpine
 RUN apk add --no-cache --virtual .persistent-deps \
 		git \
 		icu-libs \
-		zlib
+		zlib \
+		wget \
+		ca-certificates \
+		openssl
 
 ENV APCU_VERSION 5.1.8
 
@@ -22,6 +25,10 @@ COPY docker/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/php/install-composer.sh /usr/local/bin/docker-app-install-composer
 
 RUN chmod +x /usr/local/bin/docker-app-install-composer
+
+RUN /usr/local/bin/docker-app-install-composer
+
+RUN mv composer.phar /usr/local/bin/composer
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER 1
