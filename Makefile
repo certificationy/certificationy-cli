@@ -1,9 +1,8 @@
 DC=docker-compose
-DID=$(DC) ps -q app
 RUN=$(DC) run --rm app
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop
+.PHONY: help start bash stop
 
 help:
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
