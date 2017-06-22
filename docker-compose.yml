@@ -1,9 +1,10 @@
 version: '2'
 
 services:
-  php:
-    build: .
-    environment:
-      SYMFONY_ENV: dev
-    volumes:
-      - ./:/srv/certificationy
+  app:
+      build:
+          context: docker/7.1
+      environment:
+          SYMFONY_ENV: dev
+      volumes:
+          - ./:/app
