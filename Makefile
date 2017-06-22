@@ -25,7 +25,7 @@ up:
 	$(DC) up -d
 
 go_bash:
-	docker exec -i -t $(shell $(DID)) /bin/bash
+	@$(RUN) bash
 
 vendor: composer.lock
 	@$(RUN) composer install
