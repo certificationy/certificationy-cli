@@ -26,6 +26,6 @@ $config = Yaml::parse(file_get_contents('config.yml'));
 
 $startCommand = new StartCommand();
 $application->add($startCommand);
-$application->setDefaultCommand($startCommand->getName(), true);
+$application->setDefaultCommand($startCommand->getName());
 
 $application->run();
