@@ -1,10 +1,6 @@
 version: '3.3'
-
 services:
-  app:
-      build:
-          context: docker/7.1
-      environment:
-          SYMFONY_ENV: dev
-      volumes:
-          - $PWD/:/app
+    php-fpm:
+        image: gpupo/container-orchestration:symfony-dev-${TAG_VERSION}
+        volumes:
+            - $PWD/:/var/www/app
