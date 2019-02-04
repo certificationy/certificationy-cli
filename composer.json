@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "symfony/console": "~3.2",
+        "symfony/console": ">=3.2.13 <3.3.0 || >=3.3.6 < 4.0.0",
         "certificationy/certificationy": "~2.0",
         "symfony/yaml": "~3.2",
         "certificationy/symfony-pack": "~1.4",
