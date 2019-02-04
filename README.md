@@ -152,6 +152,11 @@ As default, the information will be displayed.
 
 ![Multiple choice](https://cloud.githubusercontent.com/assets/795661/3308225/721b5324-f679-11e3-8d9d-62ba32cd8e32.png "Multiple choice")
 
+### Training mode: the solution is displayed after each question
+```
+$ php certificationy.php start --training
+```
+
 ### Set custom configuration file
 ```
 $ bin/certificationy start --config=../config.yml
