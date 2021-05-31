@@ -1,10 +1,14 @@
+# docker-compose up --force-recreate --build
 version: '3.3'
 
 services:
-  app:
-      build:
-          context: docker/7.1
-      environment:
-          SYMFONY_ENV: dev
-      volumes:
-          - $PWD/:/app
+    app:
+        build:
+            context: docker/7.1
+        environment:
+            SYMFONY_ENV: dev
+        volumes:
+            - $PWD/:/app
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        command: docker-app-start

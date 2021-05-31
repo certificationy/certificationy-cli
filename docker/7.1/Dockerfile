@@ -26,12 +26,11 @@ WORKDIR /app
 
 COPY php.ini /usr/local/etc/php/php.ini
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer  && \
-    composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress --no-suggest --optimize-autoloader --classmap-authoritative \
-	&& composer clear-cache
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+### RUN composer global require "hirak/prestissimo:0.3" --prefer-dist --no-progress --optimize-autoloader --classmap-authoritative
+RUN composer clear-cache
 
 COPY start.sh /usr/local/bin/docker-app-start
 
 RUN chmod +x /usr/local/bin/docker-app-start
 
-CMD ["docker-app-start"]
