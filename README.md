@@ -118,6 +118,31 @@ docker-compose kill
 Killing certificationycli_app_1 ... done
 ```
 
+
+### Runing it through docker composer
+
+#### Start the container
+
+Start it in daemon mode.
+
+```bash
+docker compose up -d
+```
+
+#### Run certificationy
+
+Execute this instruction or whatever certificationy you want.
+
+```bash
+docker exec -it certificationy-cli_app_1 /bin/bash -c "php certificationy.php start --training"
+```
+
+#### Stop the container
+
+```bash
+docker compose down
+```
+
 ## More run options
 
 ### Select the number of questions
