@@ -11,12 +11,11 @@
 
 namespace Tests\Command;
 
-use Certificationy\Loaders\YamlLoader as Loader;
 use Certificationy\Cli\Command\StartCommand;
-
-use Symfony\Component\Yaml\Yaml;
+use Certificationy\Loaders\YamlLoader as Loader;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * StartCommandTest
@@ -25,7 +24,6 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class StartCommandTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @var StartCommand
      */
@@ -41,7 +39,7 @@ class StartCommandTest extends \PHPUnit\Framework\TestCase
      */
     private $yamlLoader;
 
-    public function setUp()
+    public function setUp(): void
     {
         $app = new Application();
         $app->add(new StartCommand());
@@ -55,70 +53,64 @@ class StartCommandTest extends \PHPUnit\Framework\TestCase
     public function testCanListCategories()
     {
         $commandTester = new CommandTester($this->command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $this->command->getName(),
             '-l' => true,
-            '-c' => $this->configFile
-        ));
+            '-c' => $this->configFile,
+        ]);
 
         $output = $commandTester->getDisplay();
 
-        $this->assertRegExp('/A/', $output);
-        $this->assertCount(count($this->yamlLoader->categories()) + 1, explode("\n", $output));
+        self::assertRegExp('/A/', $output);
+        self::assertCount(count($this->yamlLoader->categories()) + 1, explode("\n", $output));
     }
 
     public function testCanGetQuestions()
     {
-        $helper = $this->command->getHelper('question');
-        $helper->setInputStream($this->getInputStream(str_repeat("0\n", 20)));
-
         $commandTester = new CommandTester($this->command);
-        $commandTester->execute(array(
+        $commandTester->setInputs(array_fill(0, 20, '0'));
+        $commandTester->execute([
             'command' => $this->command->getName(),
             'categories' => ['B'],
-            '-c' => $this->configFile
-        ));
+            '-c' => $this->configFile,
+        ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/B/', $output);
-        $this->assertRegExp('/Starting a new set of 3 questions/', $commandTester->getDisplay());
+        self::assertRegExp('/B/', $output);
+        self::assertRegExp('/Starting a new set of 3 questions/', $commandTester->getDisplay());
     }
 
     public function testCanHideInformationAboutMultipleChoice()
     {
-        $helper = $this->command->getHelper('question');
-        $helper->setInputStream($this->getInputStream(str_repeat("0\n", 1)));
-
         $commandTester = new CommandTester($this->command);
-        $commandTester->execute(array(
+        $commandTester->setInputs([0]);
+        $commandTester->execute([
             'command' => $this->command->getName(),
             '--hide-multiple-choice' => null,
             '--number' => 1,
-            '-c' => $this->configFile
-        ));
+            '-c' => $this->configFile,
+        ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertNotRegExp('/This question IS( NOT)? multiple choice/', $output);
+        self::assertNotRegExp('/This question IS( NOT)? multiple choice/', $output);
     }
 
     public function testCanUseTrainingMode()
     {
-        $helper = $this->command->getHelper('question');
-        $helper->setInputStream($this->getInputStream(str_repeat("0\n", 1)));
-
         $commandTester = new CommandTester($this->command);
-        $commandTester->execute(array(
+        $commandTester->setInputs([0]);
+        $commandTester->execute([
             'command' => $this->command->getName(),
             '--hide-multiple-choice' => null,
             '--number' => 1,
             '--training' => true,
-            '-c' => $this->configFile
-        ));
+            '-c' => $this->configFile,
+        ]);
 
         $commandTester->setInputs([0]);
         $output = $commandTester->getDisplay();
 
-        $this->assertRegExp('/| Question | Correct answer | Result | Help |/', $output);
+        self::assertRegExp('/| Question | Correct answer | Result | Help |/', $output);
     }
 
     protected function getInputStream($input)

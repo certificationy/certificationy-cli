@@ -1,0 +1,37 @@
+name: Code Quality
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php: ['7.4','8']
+
+    steps:
+      - name: "Init repository"
+        uses: actions/checkout@v2
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: xsl
+          tools: composer
+
+      - name: "Install dependencies"
+        run: composer install
+
+      - name: "PHPStan"
+        run: composer phpstan
+
+      - name: "PHP-CS-Fixer"
+        run: composer cs-fix
+
+      - name: "Test suite"
+        run: composer test

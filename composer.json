@@ -22,15 +22,19 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "symfony/console": ">=3.2.13 <3.3.0 || >=3.3.6 < 4.0.0",
-        "certificationy/certificationy": "~2.0",
-        "symfony/yaml": "~3.2",
-        "certificationy/symfony-pack": "~1.4",
-        "certificationy/php-pack": "~1.4"
+        "php": "^7.4|^8.0",
+        "symfony/console": "^4.4 || ^5.3",
+        "certificationy/certificationy": "^2.0",
+        "symfony/yaml": "^4.4 || ^5.3",
+        "certificationy/symfony-pack": "^1.4",
+        "certificationy/php-pack": "^1.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0"
+        "friendsofphp/php-cs-fixer": "^2.18",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-phpunit": "^0.12",
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
         "psr-4": {"Certificationy\\Cli\\": "src"}
@@ -42,5 +46,18 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
+    },
+    "scripts": {
+        "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
+        "phpstan": "@php ./vendor/bin/phpstan analyse src --level max",
+        "test": "@php ./vendor/bin/phpunit"
+    },
+    "scripts-descriptions": {
+        "cs-fix": "Check and fix coding styles using PHP CS Fixer",
+        "phpstan": "Execute PHPStan analysis",
+        "test": "Launch PHPUnit test suite"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
