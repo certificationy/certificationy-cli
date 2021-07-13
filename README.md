@@ -5,8 +5,7 @@
 # Certificationy CLI
 > This is the CLI tool to train on certifications.
 
-[![Build Status](https://secure.travis-ci.org/certificationy/certificationy-cli.png?branch=master)](http://travis-ci.org/certificationy/certificationy-cli)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc/mini.png)](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc/mini.png)](https://insight.symfony.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc)
 
 ## How it looks?
 
