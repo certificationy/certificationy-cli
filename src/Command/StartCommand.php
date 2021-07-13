@@ -11,10 +11,9 @@
 
 namespace Certificationy\Cli\Command;
 
-use Certificationy\Loaders\YamlLoader as Loader;
 use Certificationy\Collections\Questions;
+use Certificationy\Loaders\YamlLoader as Loader;
 use Certificationy\Set;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,22 +33,22 @@ use Symfony\Component\Yaml\Yaml;
 class StartCommand extends Command
 {
     /**
-     * @var integer
+     * @var int
      */
     const WORDWRAP_NUMBER = 80;
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('start')
             ->setDescription('Starts a new question set')
             ->addArgument('categories', InputArgument::IS_ARRAY, 'Which categories do you want (separate multiple with a space)', [])
-            ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', 20)
+            ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'How many questions do you want?', '20')
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
-            ->addOption("training", null, InputOption::VALUE_NONE, "Training mode: the solution is displayed after each question")
+            ->addOption('training', null, InputOption::VALUE_NONE, 'Training mode: the solution is displayed after each question')
             ->addOption('hide-multiple-choice', null, InputOption::VALUE_NONE, 'Should we hide the information that the question is multiple choice?')
             ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom config', null)
         ;
@@ -58,24 +57,25 @@ class StartCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = $this->path($input->getOption('config'));
-        $paths = Yaml::parse(file_get_contents($config));
+        $config = is_string($input->getOption('config')) ? $this->path($input->getOption('config')) : '';
+        $fileContent = (string) file_get_contents($config);
+        $paths = Yaml::parse($fileContent);
 
         $yamlLoader = new Loader($paths);
         if ($input->getOption('list')) {
             $output->writeln($yamlLoader->categories());
 
-            return ;
+            return 1;
         }
 
-        $categories = $input->getArgument('categories');
-        $number     = $input->getOption('number');
+        $categories = (array) $input->getArgument('categories');
+        $number = (int) $input->getOption('number');
 
         $set = Set::create($yamlLoader->load($number, $categories));
 
-        if ($set->getQuestions()) {
+        if ($set->getQuestions()->count() > 0) {
             $output->writeln(
                 sprintf('Starting a new set of <info>%s</info> questions (available questions: <info>%s</info>)', count($set->getQuestions()), count($yamlLoader->all()))
             );
@@ -85,16 +85,18 @@ class StartCommand extends Command
         } else {
             $output->writeln('<error>✗</error> No questions can be found.');
         }
+
+        return 0;
     }
 
     /**
      * Ask questions
      *
-     * @param Set             $set    A Certificationy questions Set instance
-     * @param InputInterface  $input  A Symfony Console input instance
+     * @param Set $set A Certificationy questions Set instance
+     * @param InputInterface $input A Symfony Console input instance
      * @param OutputInterface $output A Symfony Console output instance
      */
-    protected function askQuestions(Set $set, InputInterface $input, OutputInterface $output)
+    protected function askQuestions(Set $set, InputInterface $input, OutputInterface $output): void
     {
         $questionHelper = $this->getHelper('question');
         $hideMultipleChoice = $input->getOption('hide-multiple-choice');
@@ -103,11 +105,11 @@ class StartCommand extends Command
         foreach ($set->getQuestions()->all() as $i => $question) {
             $choiceQuestion = new ChoiceQuestion(
                 sprintf(
-                    'Question <comment>#%d</comment> [<info>%s</info>] %s %s'."\n",
+                    'Question <comment>#%d</comment> [<info>%s</info>] %s %s' . "\n",
                     $questionCount++,
                     $question->getCategory(),
                     $question->getQuestion(),
-                    ($hideMultipleChoice === true ? "" : "\n".'This question <comment>'.($question->isMultipleChoice() === true ? 'IS' : 'IS NOT')."</comment> multiple choice.")
+                    ($hideMultipleChoice === true ? '' : "\n" . 'This question <comment>' . ($question->isMultipleChoice() === true ? 'IS' : 'IS NOT') . '</comment> multiple choice.')
                 ),
                 $question->getAnswersLabels()
             );
@@ -120,12 +122,12 @@ class StartCommand extends Command
 
             $answer = $questionHelper->ask($input, $output, $choiceQuestion);
 
-            $answers = true === $multiSelect ? $answer : array($answer);
-            $answer  = true === $multiSelect ? implode(', ', $answer) : $answer;
+            $answers = true === $multiSelect ? $answer : [$answer];
+            $answer = true === $multiSelect ? implode(', ', $answer) : $answer;
 
             $set->setUserAnswers($i, $answers);
 
-            if ($input->getOption("training")) {
+            if ($input->getOption('training')) {
                 $uniqueSet = Set::create(new Questions([$i => $question]));
 
                 $uniqueSet->setUserAnswers($i, $answers);
@@ -141,10 +143,10 @@ class StartCommand extends Command
     /**
      * Returns results
      *
-     * @param Set             $set    A Certificationy questions Set instance
+     * @param Set $set A Certificationy questions Set instance
      * @param OutputInterface $output A Symfony Console output instance
      */
-    protected function displayResults(Set $set, OutputInterface $output)
+    protected function displayResults(Set $set, OutputInterface $output): void
     {
         $results = [];
 
@@ -152,7 +154,7 @@ class StartCommand extends Command
 
         foreach ($set->getQuestions()->all() as $key => $question) {
             $isCorrect = $set->isCorrect($key);
-            $questionCount++;
+            ++$questionCount;
             $label = wordwrap($question->getQuestion(), self::WORDWRAP_NUMBER, "\n");
             $help = $question->getHelp();
 
@@ -167,7 +169,7 @@ class StartCommand extends Command
         if ($results) {
             $tableHelper = new Table($output);
             $tableHelper
-                ->setHeaders(array('Question', 'Correct answer', 'Result', 'Help'))
+                ->setHeaders(['Question', 'Correct answer', 'Result', 'Help'])
                 ->setRows($results)
             ;
 
@@ -182,11 +184,9 @@ class StartCommand extends Command
     /**
      * Returns configuration file path
      *
-     * @param null|string $config
-     *
-     * @return String $path      The configuration filepath
+     * @return string $path      The configuration filepath
      */
-    protected function path(string $config = null) : string
+    protected function path(string $config = null): string
     {
         $defaultConfig = dirname(__DIR__)
             . DIRECTORY_SEPARATOR
