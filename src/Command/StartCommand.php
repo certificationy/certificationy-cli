@@ -159,7 +159,7 @@ class StartCommand extends Command
             $help = $question->getHelp();
 
             $results[] = [
-                sprintf('<comment>#%d</comment> %s', $questionCount, $label),
+                sprintf('<comment>#%d</comment> [<info>%s</info>] %s', $questionCount, $question->getCategory(), $label),
                 wordwrap(implode(', ', $question->getCorrectAnswersValues()), self::WORDWRAP_NUMBER, "\n"),
                 $isCorrect ? '<info>✔</info>' : '<error>✗</error>',
                 (null !== $help) ? wordwrap($help, self::WORDWRAP_NUMBER, "\n") : '',
