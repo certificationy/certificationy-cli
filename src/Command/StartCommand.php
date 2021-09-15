@@ -50,7 +50,7 @@ class StartCommand extends Command
             ->addOption('list', 'l', InputOption::VALUE_NONE, 'List categories')
             ->addOption('training', null, InputOption::VALUE_NONE, 'Training mode: the solution is displayed after each question')
             ->addOption('hide-multiple-choice', null, InputOption::VALUE_NONE, 'Should we hide the information that the question is multiple choice?')
-            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom config', null)
+            ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Use custom config', 'config.yml')
         ;
     }
 
@@ -64,6 +64,7 @@ class StartCommand extends Command
         $paths = Yaml::parse($fileContent);
 
         $yamlLoader = new Loader($paths);
+
         if ($input->getOption('list')) {
             $output->writeln($yamlLoader->categories());
 

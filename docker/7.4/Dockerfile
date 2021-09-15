@@ -7,7 +7,8 @@ RUN apk add --no-cache --virtual .persistent-deps \
  		zlib \
  		wget \
 		ca-certificates \
-		curl
+		curl \
+		libzip-dev
 
 RUN set -xe \
 	&& apk add --no-cache --virtual .build-deps \
