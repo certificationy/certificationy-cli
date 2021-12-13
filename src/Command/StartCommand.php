@@ -59,7 +59,7 @@ class StartCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = is_string($input->getOption('config')) ? $this->path($input->getOption('config')) : '';
+        $config = $this->path(is_string($input->getOption('config')) ? $input->getOption('config') : null);
         $fileContent = (string) file_get_contents($config);
         $paths = Yaml::parse($fileContent);
 
@@ -187,7 +187,7 @@ class StartCommand extends Command
      *
      * @return string $path      The configuration filepath
      */
-    protected function path(string $config = null): string
+    protected function path(?string $config = null): string
     {
         $defaultConfig = dirname(__DIR__)
             . DIRECTORY_SEPARATOR
