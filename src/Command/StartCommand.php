@@ -35,7 +35,7 @@ class StartCommand extends Command
     /**
      * @var int
      */
-    const WORDWRAP_NUMBER = 80;
+    public const WORDWRAP_NUMBER = 80;
 
     /**
      * {@inheritdoc}

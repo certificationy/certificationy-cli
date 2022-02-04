@@ -61,7 +61,7 @@ class StartCommandTest extends \PHPUnit\Framework\TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertRegExp('/A/', $output);
+        self::assertMatchesRegularExpression('/A/', $output);
         self::assertCount(count($this->yamlLoader->categories()) + 1, explode("\n", $output));
     }
 
@@ -76,8 +76,8 @@ class StartCommandTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        self::assertRegExp('/B/', $output);
-        self::assertRegExp('/Starting a new set of 3 questions/', $commandTester->getDisplay());
+        self::assertMatchesRegularExpression('/B/', $output);
+        self::assertMatchesRegularExpression('/Starting a new set of 3 questions/', $commandTester->getDisplay());
     }
 
     public function testCanHideInformationAboutMultipleChoice()
@@ -92,7 +92,7 @@ class StartCommandTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        self::assertNotRegExp('/This question IS( NOT)? multiple choice/', $output);
+        self::assertDoesNotMatchRegularExpression('/This question IS( NOT)? multiple choice/', $output);
     }
 
     public function testCanUseTrainingMode()
@@ -110,7 +110,7 @@ class StartCommandTest extends \PHPUnit\Framework\TestCase
         $commandTester->setInputs([0]);
         $output = $commandTester->getDisplay();
 
-        self::assertRegExp('/| Question | Correct answer | Result | Help |/', $output);
+        self::assertMatchesRegularExpression('/| Question | Correct answer | Result | Help |/', $output);
     }
 
     protected function getInputStream($input)
