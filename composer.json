@@ -22,19 +22,19 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "symfony/console": "^4.4 || ^5.3",
+        "php": "^8.0",
+        "symfony/console": "^4.4 || ^5.4 || ^6.0",
         "certificationy/certificationy": "^2.0",
-        "symfony/yaml": "^4.4 || ^5.3",
+        "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
         "certificationy/symfony-pack": "^1.4",
-        "certificationy/php-pack": "^1.4"
+        "certificationy/php-pack": "^1.5"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.18",
+        "friendsofphp/php-cs-fixer": "^3.5",
         "php-parallel-lint/php-parallel-lint": "^1.0",
-        "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-phpunit": "^0.12",
-        "phpunit/phpunit": "^8.0"
+        "phpstan/phpstan": "^1.3",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {"Certificationy\\Cli\\": "src"}
@@ -49,7 +49,7 @@
     },
     "scripts": {
         "cs-fix": "@php ./vendor/bin/php-cs-fixer fix",
-        "phpstan": "@php ./vendor/bin/phpstan analyse src --level max",
+        "phpstan": "@php ./vendor/bin/phpstan analyse src --level 8",
         "test": "@php ./vendor/bin/phpunit"
     },
     "scripts-descriptions": {

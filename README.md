@@ -3,9 +3,8 @@
 </p>
 
 # Certificationy CLI
-> This is the CLI tool to train on certifications.
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc/mini.png)](https://insight.symfony.com/projects/cd3b6bc1-632e-491a-abfc-43edc390e1cc)
+> This is the CLI tool to train on certifications.
 
 ## How it looks?
 

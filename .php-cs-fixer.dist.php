@@ -5,7 +5,8 @@ $finder = PhpCsFixer\Finder::create()->in([
     __DIR__.'/tests',
 ]);
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+return $config
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
@@ -28,9 +29,8 @@ return PhpCsFixer\Config::create()
             'align' => 'left',
         ],
         'protected_to_private' => false,
-        'psr4' => false,
         'self_accessor' => false,
-        'yoda_style' => null,
+        'yoda_style' => false,
         'non_printable_character' => true,
         'phpdoc_no_empty_return' => false,
         'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],

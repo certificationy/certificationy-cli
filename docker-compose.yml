@@ -4,9 +4,7 @@ version: '3.3'
 services:
     app:
         build:
-            context: docker/7.4
-        environment:
-            SYMFONY_ENV: dev
+            context: docker/8.4
         volumes:
             - $PWD/:/app
         stdin_open: true # docker run -i
