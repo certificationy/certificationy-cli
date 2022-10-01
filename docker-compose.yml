@@ -4,7 +4,7 @@ version: '3.3'
 services:
     app:
         build:
-            context: docker/8.4
+            context: docker/8.0
         volumes:
             - $PWD/:/app
         stdin_open: true # docker run -i
